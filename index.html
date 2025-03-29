@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿寒的7-11門派收益分配計算機</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { margin: 10px; padding: 8px; }
+    </style>
+</head>
+<body>
+    <h2>阿寒的7-11門派收益分配計算機</h2>
+    <label>總售價：</label>
+    <input type="number" id="totalPrice" value="10000">
+    <br>
+    <label>手續費率 (%)：</label>
+    <input type="number" id="feeRate" value="8.4">
+    <br>
+    <label>總人數：</label>
+    <input type="number" id="totalPeople" value="6">
+    <br>
+    <button onclick="calculateFairSplit()">計算</button>
+    <h3>計算結果：</h3>
+    <p id="result"></p>
+
+    <script>
+        function calculateFairSplit() {
+            let totalPrice = parseFloat(document.getElementById("totalPrice").value);
+            let feeRate = parseFloat(document.getElementById("feeRate").value) / 100;
+            let totalPeople = parseInt(document.getElementById("totalPeople").value);
+
+            let firstPersonGets = totalPrice * (1 - feeRate);
+            let X = firstPersonGets * (1 - feeRate) / (totalPeople - 1 + (1 - feeRate));
+            let eachTransferAmount = X / (1 - feeRate);
+            let totalTransfer = eachTransferAmount * (totalPeople - 1);
+            let firstPersonFinal = firstPersonGets - totalTransfer;
+
+            document.getElementById("result").innerHTML = 
+                `每個人最終獲得的金額: ${X.toFixed(2)}<br>
+                 第一個人需轉給每個人的金額（含手續費）: ${eachTransferAmount.toFixed(2)}<br>
+                 第一個人保留的金額: ${firstPersonFinal.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
